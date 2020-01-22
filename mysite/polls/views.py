@@ -36,3 +36,30 @@ def vote(request, question_id):
         # with POST data. This prevents data from being posted twice if a
         # user hits the Back button.
         return HttpResponseRedirect(reverse('polls:results', args=(question.id,)))
+
+
+
+def login(request):
+    if request.method == 'GET':
+        form = UserForm(request.GET)
+        if form.is_valid():
+            _email = form.cleaned_data['Input_Email']
+            _password = form.cleaned_data['Input_Password']
+
+            user = authentificate(username = _email, password = _password)
+
+
+            if user is not None:
+                connection = "L'utilisateur existe"
+                user.last_login = timezone.now()
+                user.save(update_fields=['last_login'])
+                request.session['member_id'] = _email
+                print(connection)
+            else:
+                connection = "l'utilisateur n'existe pas"
+                print(connection)
+
+    else:
+        form = UserForm()
+
+    return render(request, 'polls/login.html', {})

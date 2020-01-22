@@ -20,3 +20,7 @@ class Choice(models.Model):
 
     def __str__(self):
         return self.choice_text
+
+class UserForm(models.Model):
+    Input_Email = models.CharField(max_length=200)
+    Input_Password = models.CharField(max_length=100)
